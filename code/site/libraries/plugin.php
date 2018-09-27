@@ -86,22 +86,22 @@ class ApiPlugin extends JPlugin
 
 		if (empty($plugin))
 		{
-			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND', ucfirst($name)), 'APINotFoundException');
+			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND', "FUTT" . $name), 'APINotFoundException');
 		}
 
 		$plgfile = JPATH_BASE . self::$plg_path . $name . '/' . $name . '.php';
 
 		if (! JFile::exists($plgfile))
 		{
-			ApiError::raiseError(400, JText::sprintf('COM_API_FILE_NOT_FOUND', ucfirst($name)), 'APINotFoundException');
+			ApiError::raiseError(400, JText::sprintf('COM_API_FILE_NOT_FOUND', "FARR" . $name), 'APINotFoundException');
 		}
 
 		include_once $plgfile;
-		$class = self::$plg_prefix . ucwords($name);
+		$class = self::$plg_prefix . $name;
 
 		if (! class_exists($class))
 		{
-			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND', ucfirst($name)), 'APINotFoundException');
+			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND',"BO " . $name), 'APINotFoundException');
 		}
 
 		$cparams = JComponentHelper::getParams('com_api');
@@ -277,14 +277,14 @@ class ApiPlugin extends JPlugin
 			$this->checkInternally($resource_name);
 		}
 
-		$user = APIAuthentication::authenticateRequest();
-		$this->set('user', $user);
-		$session = JFactory::getSession();
-		$session->set('user', $user);
+		// $user = APIAuthentication::authenticateRequest();
+		// $this->set('user', $user);
+		// $session = JFactory::getSession();
+		// $session->set('user', $user);
 
 		$access = $this->getResourceAccess($resource_name, $this->request_method);
 
-		if ($access == 'protected' && $user === false)
+		if ($access == 'protected' && $user === null)
 		{
 			ApiError::raiseError(403, APIAuthentication::getAuthError(), 'APIUnauthorisedException');
 		}
@@ -321,12 +321,12 @@ class ApiPlugin extends JPlugin
 	{
 		if (! method_exists($this, $resource_name))
 		{
-			ApiError::raiseError(404, JText::sprintf('COM_API_PLUGIN_METHOD_NOT_FOUND', ucfirst($resource_name)), 'APINotFoundException');
+			ApiError::raiseError(404, JText::sprintf('COM_API_PLUGIN_METHOD_NOT_FOUND', "MUMU-" . $resource_name), 'APINotFoundException');
 		}
 
 		if (! is_callable(array($this, $resource_name)))
 		{
-			ApiError::raiseError(404, JText::sprintf('COM_API_PLUGIN_METHOD_NOT_CALLABLE', ucfirst($resource_name)), 'APINotFoundException');
+			ApiError::raiseError(404, JText::sprintf('COM_API_PLUGIN_METHOD_NOT_CALLABLE', "MAMA-" . $resource_name), 'APINotFoundException');
 		}
 
 		return true;
@@ -494,25 +494,25 @@ class ApiPlugin extends JPlugin
 	 *
 	 * @since 2.0
 	 */
-	public function setApiResponse($error, $data)
-	{
-		$result = new stdClass;
-		$result->err_code = '';
-		$result->err_message = '';
-		$result->data = new stdClass;
+	// public function setApiResponse($error, $data)
+	// {
+	// 	$result = new stdClass;
+	// 	$result->err_code = '';
+	// 	$result->err_message = '';
+	// 	$result->data = new stdClass;
 
-		if ($error)
-		{
-			$result->err_code = $this->err_code;
-			$result->err_message = JText::_($this->err_message);
-		}
-		else
-		{
-			$result->data = $data;
-		}
+	// 	if ($error)
+	// 	{
+	// 		$result->err_code = $this->err_code;
+	// 		$result->err_message = JText::_($this->err_message);
+	// 	}
+	// 	else
+	// 	{
+	// 		$result->data = $data;
+	// 	}
 
-		$this->set('response', $result);
-	}
+	// 	$this->set('response', $result);
+	// }
 
 	/**
 	 * Determines the method with which to encode the output based on the requested content type

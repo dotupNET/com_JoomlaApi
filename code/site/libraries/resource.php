@@ -37,18 +37,18 @@ abstract class ApiResource {
 	final public static function getInstance($name, ApiPlugin $plugin, $prefix=null)
 	{
 
-		if (is_null($prefix))
-		{
-			$prefix = $plugin->get('component').'ApiResource';
-		}
+		// if (is_null($prefix))
+		// {
+		// 	$prefix = $plugin->get('component').'ApiResource';
+		// }
 
-		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $name);
-		$resourceClass = $prefix.ucfirst($type);
+		// $type = preg_replace('/[^A-Z0-9_\.-]/i', '', $name);
+		$resourceClass = $name; // $prefix.ucfirst($type);
 
 		if (!class_exists( $resourceClass ))
 		{
 			jimport('joomla.filesystem.path');
-			if($path = JPath::find(self::addIncludePath(), strtolower($type).'.php'))
+			if($path = JPath::find(self::addIncludePath(), $name.'.php'))
 			{
 				require_once $path;
 
