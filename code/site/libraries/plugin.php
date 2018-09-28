@@ -84,69 +84,6 @@ class ApiPlugin extends JPlugin
 			self::$plg_path = self::$plg_path . $plugin->name . '/';
 		}
 
-
-// TEST
-$user = 'MotoAppUser';
-$pass = 'MotoAppUser';
-
-
-	jimport('joomla.user.authentication');
-
-	$authenticate = JAuthentication::getInstance();
-
-	$response = $authenticate->authenticate(array('username' => $user, 'password' => $pass), $options = array());
-
-	if ($response->status === JAuthentication::STATUS_SUCCESS)
-	{
-		$userId = JUserHelper::getUserId($response->username);
-
-		if ($userId === false)
-		{
- 	ApiError::raiseError(400, JError::getError(), 'APINotFoundException');
-			return false;
-		}
-	}
-	else
-	{
-		if (isset($response->error_message))
-		{
-			ApiError::raiseError(400,$response->error_message , 'APINotFoundException');
-		}
-		else
-		{
-			ApiError::raiseError(400,$response->getError() , 'APINotFoundException');
-		}
-
-	}
-
-
-// $db = JFactory::getDbo();
-// $query	= $db->getQuery(true)
-// 	->select('id')
-// 	->from('#__users')
-// 	->where('username=' . $db->quote($username));
-
-// $db->setQuery($query);
-// $result = $db->loadResult();
-
-// if (!$result) {
-// 	ApiError::raiseError(400, 'WRONG USER', 'APINotFoundException');
-// }
-
-// /**
-//  * To authenticate, the username must exist in the database, and the password should be equal
-//  * to the reverse of the username (so user joeblow would have password wolbeoj)
-//  */
-// if($result && ($username == strrev( $credentials['password'] )))
-// {
-// 	ApiError::raiseError(400, 'LOGED IN', 'APINotFoundException');
-// }
-// else
-// {
-// 	ApiError::raiseError(400, 'Invalid username and password', 'APINotFoundException');
-// }
-// TEST END
-
 		if (empty($plugin))
 		{
 			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND', "FUTT" . $name), 'APINotFoundException');
