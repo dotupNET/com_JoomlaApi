@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.plugin.plugin');
 
-class Users extends ApiPlugin
+class ApiUserAuth extends ApiPlugin
 {
 	public function __construct(&$subject, $config = array())
 	{
