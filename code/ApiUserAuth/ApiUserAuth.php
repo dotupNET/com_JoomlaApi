@@ -16,11 +16,11 @@ class Users extends ApiPlugin
 	{
 		parent::__construct($subject, $config = array());
 
-		ApiResource::addIncludePath(dirname(__FILE__).'/ApiAuthentication');
+		ApiResource::addIncludePath(dirname(__FILE__).'/ApiUserAuth');
 		
 		/*load language file for plugin frontend*/ 
 		$lang = JFactory::getLanguage(); 
-		$lang->load('ApiAuthentication', JPATH_ADMINISTRATOR,'',true);
+		$lang->load('ApiUserAuth', JPATH_ADMINISTRATOR,'',true);
 		
 		// Set the login resource to be public
 		$this->setResourceAccess('Login', 'public','post');

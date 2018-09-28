@@ -77,7 +77,7 @@ class UsersApiResourceConfig extends ApiResource
 	 */
 	public function post()
 	{
-		$this->plugin->setResponse(JText::_('ApiAuthentication_UNSUPPORTED_METHOD_POST'));
+		$this->plugin->setResponse(JText::_('ApiUserAuth_UNSUPPORTED_METHOD_POST'));
 	}
 
 	/**

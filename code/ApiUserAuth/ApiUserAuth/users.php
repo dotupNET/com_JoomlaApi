@@ -91,7 +91,7 @@ class UsersApiResourceUsers extends ApiResource
 		{
 			// Not given username or user_id to edit the details of user
 			$eobj->code = '400';
-			$eobj->message = JText::_('ApiAuthentication_REQUIRED_DATA_EMPTY_MESSAGE');
+			$eobj->message = JText::_('ApiUserAuth_REQUIRED_DATA_EMPTY_MESSAGE');
 			$this->plugin->setResponse($eobj);
 
 			return;
@@ -171,7 +171,7 @@ class UsersApiResourceUsers extends ApiResource
 					$eobj->status     = true;
 					$eobj->id         = $data['user_id'];
 					$eobj->code       = '200';
-					$eobj->message    = JText::_('ApiAuthentication_ACCOUNT_EDITED_SUCCESSFULLY_MESSAGE');
+					$eobj->message    = JText::_('ApiUserAuth_ACCOUNT_EDITED_SUCCESSFULLY_MESSAGE');
 					$this->plugin->setResponse($eobj);
 
 					return;
@@ -181,7 +181,7 @@ class UsersApiResourceUsers extends ApiResource
 		{
 			// Not given username or user_id to edit the details of user
 			$eobj->code = '400';
-			$eobj->message = JText::_('ApiAuthentication_REQUIRED_DATA_EMPTY_MESSAGE');
+			$eobj->message = JText::_('ApiUserAuth_REQUIRED_DATA_EMPTY_MESSAGE');
 			$this->plugin->setResponse($eobj);
 
 			return;
@@ -221,7 +221,7 @@ class UsersApiResourceUsers extends ApiResource
 			$eobj->status = false;
 			$eobj->id = 0;
 			$eobj->code = '403';
-			$eobj->message = JText::_( 'ApiAuthentication_REQUIRED_DATA_EMPTY_MESSAGE' );
+			$eobj->message = JText::_( 'ApiUserAuth_REQUIRED_DATA_EMPTY_MESSAGE' );
 
 			$this->plugin->setResponse($eobj);
 			return;
@@ -315,10 +315,10 @@ class UsersApiResourceUsers extends ApiResource
 			{
 				$pobj = $this->createEsprofile($user->id);
 				//$message = "created of username-" . $user->username .",send mail of details please check";
-				$message = JText::_('ApiAuthentication_ACCOUNT_CREATED_SUCCESSFULLY_MESSAGE');
+				$message = JText::_('ApiUserAuth_ACCOUNT_CREATED_SUCCESSFULLY_MESSAGE');
 			}
 			else
-			$message = JText::_('ApiAuthentication_ACCOUNT_CREATED_SUCCESSFULLY_MESSAGE');
+			$message = JText::_('ApiUserAuth_ACCOUNT_CREATED_SUCCESSFULLY_MESSAGE');
 
 			// Assign badge for the person.
 			$badge = FD::badges();
@@ -355,7 +355,7 @@ class UsersApiResourceUsers extends ApiResource
 			$user = JUser::getInstance($id);
 			if (!$user->id)
 			{
-				$this->plugin->setResponse($this->getErrorResponse(JText::_( 'ApiAuthentication_USER_NOT_FOUND_MESSAGE' )));
+				$this->plugin->setResponse($this->getErrorResponse(JText::_( 'ApiUserAuth_USER_NOT_FOUND_MESSAGE' )));
 
 				return;
 			}
@@ -468,19 +468,19 @@ class UsersApiResourceUsers extends ApiResource
 			if($sval)
 			{
 				$obj->success = 1;
-				$obj->message = JText::_('ApiAuthentication_PROFILE_CREATED_SUCCESSFULLY_MESSAGE');
+				$obj->message = JText::_('ApiUserAuth_PROFILE_CREATED_SUCCESSFULLY_MESSAGE');
 			}
 			else
 			{
 				$obj->success = 0;
-				$obj->message = JText::_( 'ApiAuthentication_UNABLE_CREATE_PROFILE_MESSAGE' );
+				$obj->message = JText::_( 'ApiUserAuth_UNABLE_CREATE_PROFILE_MESSAGE' );
 			}
 
 		}
 		else
 		{
 			$obj->success = 0;
-			$obj->message = JText::_( 'ApiAuthentication_EASYSOCIAL_NOT_INSTALL_MESSAGE');
+			$obj->message = JText::_( 'ApiUserAuth_EASYSOCIAL_NOT_INSTALL_MESSAGE');
 		}
 
 		return $obj;

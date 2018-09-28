@@ -26,7 +26,7 @@ class Login extends ApiResource
 {
 	public function get()
 	{
-		$this->plugin->setResponse( JText::_('ApiAuthentication_GET_METHOD_NOT_ALLOWED_MESSAGE'));
+		$this->plugin->setResponse( JText::_('ApiUserAuth_GET_METHOD_NOT_ALLOWED_MESSAGE'));
 	}
 
 	public function post()
@@ -96,7 +96,7 @@ class Login extends ApiResource
 		else
 		{
 			$obj->code = 403;
-			$obj->message = JText::_('ApiAuthentication_BAD_REQUEST_MESSAGE');
+			$obj->message = JText::_('ApiUserAuth_BAD_REQUEST_MESSAGE');
 		}
 		return( $obj );
 	

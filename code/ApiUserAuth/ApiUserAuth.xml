@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0.0" type="plugin" group="api" method="upgrade">
+    <name>ApiUserAuth</name>
+    <version>1.0.0</version>
+    <creationDate>2018-09-28</creationDate>
+    <author>Peter Ullrich</author> 
+    <files>
+        <filename plugin="ApiUserAuth">ApiUserAuth.php</filename>
+        <folder>ApiUserAuth</folder> 
+    </files>
+    <languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.ApiUserAuth.ini</language>
+		<language tag="en-GB">en-GB/en-GB.ApiUserAuth.sys.ini</language>
+	</languages>
+</extension>
