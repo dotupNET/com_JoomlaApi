@@ -31,6 +31,24 @@ class Login extends ApiResource
 
 	public function post()
 	{
+		$app = JFactory::getApplication();
+
+		if (array_key_exists("HTTP_USERNAME", $_SERVER)) {
+			$username = $_SERVER['HTTP_USERNAME'];
+			if (array_key_exists("HTTP_PASSWORD", $_SERVER)) {
+				$password = $_SERVER['HTTP_PASSWORD'];
+			}
+		} else {
+			$username = $app->input->get('username', 0, 'STRING');
+			$password = $app->input->get('password', 0, 'STRING');
+		}
+
+		$userId = $this->loadUserByCredentials($username, $password);
+
+		if($userId===false){
+			ApiError::raiseError(400, 'Invalid credentials', 'APIException');
+			return;
+		}
 		$this->plugin->setResponse($this->keygen());
 	}
 
@@ -46,12 +64,6 @@ class Login extends ApiResource
 
 		$user = JFactory::getUser();
 		$id = JUserHelper::getUserId($username);
-
-		if($id == null)
-		{
-			$model = FD::model('Users');
-			$id = $model->getUserId('email', $username);            
-		}
 
 		$kmodel = new ApiModelKey;
 		$model = new ApiModelKeys;
@@ -100,5 +112,30 @@ class Login extends ApiResource
 		}
 		return( $obj );
 	
+	}
+
+	private function loadUserByCredentials($user, $pass)
+	{
+		jimport('joomla.user.authentication');
+
+		$authenticate = JAuthentication::getInstance();
+
+		$response = $authenticate->authenticate(array('username' => $user, 'password' => $pass), $options = array());
+
+		if ($response->status === JAuthentication::STATUS_SUCCESS)
+		{
+			$userId = JUserHelper::getUserId($response->username);
+
+			if ($userId === false)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+		return $userId;
 	}
 }
