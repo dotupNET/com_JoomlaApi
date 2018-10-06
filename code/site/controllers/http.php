@@ -111,11 +111,17 @@ class ApiControllerHttp extends ApiController
 			$output = new \stdClass;
 			header("Content-type: application/json");
 
-			if ($response instanceof Exception)
-			{
-				$output->message = $response->getMessage();
-				$output->code = $response->getCode();
-			}
+      if ($response instanceof ApiException)
+      {
+        $output->message = $response->getMessage();
+        $output->code = $response->getCode();
+        $output->data = $response->getData();
+      }
+      elseif ($response instanceof Exception)
+      {
+        $output->message = $response->getMessage();
+        $output->code = $response->getCode();
+      }
 			else
 			{
 				$output = $response->get('response');

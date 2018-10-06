@@ -286,7 +286,7 @@ class ApiPlugin extends JPlugin
 
 		if ($access == 'protected' && $user === false)
 		{
-			ApiError::raiseError(403, APIAuthentication::getAuthError(), 'APIUnauthorisedException');
+			ApiError::raiseError(400, 'API KEY', 'APIUnauthorisedException');
 		}
 
 		if (! $this->checkRequestLimit())

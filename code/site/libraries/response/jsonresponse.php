@@ -29,7 +29,13 @@ class APIJSONResponse
 		$app = JFactory::getApplication();
 		$this->data = new \stdClass;
 
-		if ($response instanceof Exception) {
+    if ($response instanceof ApiException)
+    {
+      $this->err_code = $response->getCode();
+      $this->err_msg = $response->getMessage();
+      $this->data = $response->getData();
+    }
+		elseif ($response instanceof Exception) {
 			$this->err_msg = $response->getMessage();
 			$this->err_code = $response->getCode();
 		}

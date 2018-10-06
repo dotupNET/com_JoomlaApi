@@ -10,5 +10,22 @@
 
 class ApiException extends Exception
 {
-	var $http_code = 400;
+  public function __construct(string $message = "", int $code = 0, $data = null, Throwable $previous = null)
+  {
+    parent::__construct($message, $code, $previous);
+    $this->responseData = $data;
+  }
+
+  var $http_code = 400;
+	var $responseData = null;
+
+  public function getData()
+  {
+    return $this->responseData;
+  }
+
+  public function setData($data): void
+  {
+    $this->responseData = $data;
+  }
 }
