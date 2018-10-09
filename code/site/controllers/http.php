@@ -23,16 +23,7 @@ class ApiControllerHttp extends ApiController
 {
 	public $callbackname = 'callback';
 
-	/**
-	 * Typical view method for MVC based architecture
-	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return  Mixed
-	 *
-	 * @since   12.2
-	 */
+
 	public function display($cachable = false, $urlparams = array())
 	{
 		$this->resetDocumentType();
@@ -78,14 +69,14 @@ class ApiControllerHttp extends ApiController
 
 		try
 		{
-			JResponse::setHeader('status', 200);
+		  $app->setHeader('status', 200);
 			$resource_response = ApiPlugin::getInstance($name)->fetchResource();
 
 			echo $this->respond($resource_response);
 		}
 		catch (Exception $e)
 		{
-			JResponse::setHeader('status', $e->http_code);
+      http_response_code($e->getCode());
 			echo $this->respond($e);
 		}
 	}
@@ -136,7 +127,8 @@ class ApiControllerHttp extends ApiController
 		{
 			case 'application/json':
 			default:
-				header("Content-type: application/json");
+      header("Content-type: application/json");
+      header("status: 400");
 				$format = 'json';
 			break;
 
