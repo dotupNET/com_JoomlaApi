@@ -33,44 +33,35 @@ class Login extends ApiResource
 	{
 		$app = JFactory::getApplication();
 
-		if (array_key_exists("HTTP_USERNAME", $_SERVER)) {
-			$username = $_SERVER['HTTP_USERNAME'];
-			if (array_key_exists("HTTP_PASSWORD", $_SERVER)) {
-				$password = $_SERVER['HTTP_PASSWORD'];
-			}
-		} else {
-			$username = $app->input->get('username', 0, 'STRING');
-			$password = $app->input->get('password', 0, 'STRING');
-		}
+        $body = json_decode(file_get_contents('php://input'), TRUE);
 
-		$userId = $this->loadUserByCredentials($username, $password);
+        $username = $body['username'];
+        $password = $body['password'];
 
-		if($userId===false){
+		$user = $this->loadUserByCredentials($username, $password);
+
+		if($user===false){
 			ApiError::raiseError(400, 'Invalid credentials', 'APIException');
 			return;
 		}
-		$this->plugin->setResponse($this->keygen());
+
+		$token = $this->keygen($user);
+
+		$user->token = $token;
+		$user->password = "";
+		$this->plugin->setResponse($user);
 	}
 
-	public function keygen()
+	public function keygen($user)
 	{
 		//init variable
 		$obj = new stdclass;
-		$umodel = new JUser;
-		$user = $umodel->getInstance();       
+        $key = null;
 
-		$app = JFactory::getApplication();
-		$username = $app->input->get('username', 0, 'STRING');
+        // Get login user hash
+		$kmodel = new ApiModelKeyShit();
+		$kmodel->setState('user_id', $user->id);
 
-		$user = JFactory::getUser();
-		$id = JUserHelper::getUserId($username);
-
-		$kmodel = new ApiModelKey;
-		$model = new ApiModelKeys;
-		$key = null;
-		// Get login user hash
-		//$kmodel->setState('user_id', $user->id);
-		$kmodel->setState('user_id', $id);
 		$log_hash = $kmodel->getList();
 		$log_hash = (!empty($log_hash))?$log_hash[count($log_hash) - count($log_hash)]:$log_hash;
 
@@ -81,7 +72,7 @@ class Login extends ApiResource
 		elseif( $key == null || empty($key) )
 		{
 				// Create new key for user
-				$data = array(
+            $data = array(
 				'userid' => $user->id,
 				'domain' => '' ,
 				'state' => 1,
@@ -91,27 +82,22 @@ class Login extends ApiResource
 				'ret' => 'index.php?option=com_api&view=keys',
 				'option' => 'com_api',
 				JSession::getFormToken() => 1
-				);
+            );
 
-				$result = $kmodel->save($data);
-				$key = $result->hash;
+            $result = $kmodel->save($data);
+            $key = $result->hash;
 				
 		}
 		
-		if( !empty($key) )
-		{
-			$obj->auth = $key;
-			$obj->code = '200';
-			//$obj->id = $user->id;
-			$obj->id = $id;
+		if( empty($key) ){
+            if($user===false){
+                ApiError::raiseError(400, 'Authentication failed', 'APIException');
+                return;
+            }
 		}
-		else
-		{
-			$obj->code = 403;
-			$obj->message = JText::_('ApiUserAuth_BAD_REQUEST_MESSAGE');
-		}
-		return( $obj );
-	
+
+		return $key;
+
 	}
 
 	private function loadUserByCredentials($user, $pass)
@@ -124,18 +110,12 @@ class Login extends ApiResource
 
 		if ($response->status === JAuthentication::STATUS_SUCCESS)
 		{
-			$userId = JUserHelper::getUserId($response->username);
-
-			if ($userId === false)
-			{
-				return false;
-			}
+		    return $response;
 		}
 		else
 		{
 			return false;
 		}
 
-		return $userId;
 	}
 }

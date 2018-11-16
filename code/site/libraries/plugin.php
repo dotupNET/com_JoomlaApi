@@ -86,14 +86,14 @@ class ApiPlugin extends JPlugin
 
 		if (empty($plugin))
 		{
-			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND', "FUTT" . $name), 'APINotFoundException');
+			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND', "PLUGIN" . $name), 'APINotFoundException');
 		}
 
 		$plgfile = JPATH_BASE . self::$plg_path . $name . '/' . $name . '.php';
 
 		if (! JFile::exists($plgfile))
 		{
-			ApiError::raiseError(400, JText::sprintf('COM_API_FILE_NOT_FOUND', "FARR" . $name), 'APINotFoundException');
+			ApiError::raiseError(400, JText::sprintf('COM_API_FILE_NOT_FOUND', "PLUGIN" . $name), 'APINotFoundException');
 		}
 
 		include_once $plgfile;
@@ -101,7 +101,7 @@ class ApiPlugin extends JPlugin
 
 		if (! class_exists($class))
 		{
-			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND',"BO " . $name), 'APINotFoundException');
+			ApiError::raiseError(400, JText::sprintf('COM_API_PLUGIN_CLASS_NOT_FOUND',"CLASS" . $name), 'APINotFoundException');
 		}
 
 		$cparams = JComponentHelper::getParams('com_api');

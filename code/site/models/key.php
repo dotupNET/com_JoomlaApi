@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 jimport('joomla.application.component.model');
 
-class ApiModelKey extends ApiModel
+class ApiModelKeyShit extends ApiModel
 {
 	public function __construct( $config = array() )
 	{

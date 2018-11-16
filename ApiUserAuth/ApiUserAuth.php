@@ -21,9 +21,11 @@ class ApiUserAuth extends ApiPlugin
 		/*load language file for plugin frontend*/ 
 		$lang = JFactory::getLanguage(); 
 		$lang->load('ApiUserAuth', JPATH_ADMINISTRATOR,'',true);
-		
+
+		//$this->allowAutoKeyGeneration(false);
+
 		// Set the login resource to be public
-		$this->setResourceAccess('Login', 'public','post');
+        $this->setResourceAccess('login', 'public','post');
 		$this->setResourceAccess('users', 'protected', 'post');
 		$this->setResourceAccess('config', 'protected', 'get');
 	}
